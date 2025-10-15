@@ -1,36 +1,70 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+## 🏗️ Project Structure fidelpe-extractx
 
-## Getting Started
+Créer une application web ou un module qui permet à l’utilisateur de téléverser un fichier (image, PDF, document, etc.), puis d’extraire automatiquement le texte qu’il contient, de le simplifier linguistiquement (résumé, reformulation, ou traduction claire), et enfin de copier facilement le texte obtenu.
 
-First, run the development server:
-
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+````
+fidelpe-extractx/
+│
+├─ app/                          # Next.js App Router (frontend only)
+│  ├─ layout.tsx                 # Global layout (Navbar, Footer, etc.)
+│  ├─ page.tsx                   # Home page
+│  │
+│  ├─ upload/                    # Upload page
+│  │   └─ page.tsx
+│  ├─ extract/                   # Text extraction flow
+│  │   └─ page.tsx
+│  ├─ simplify/                  # Simplify or summarize text
+│  │   └─ page.tsx
+│  ├─ api/                       # Next.js serverless API routes (frontend only)
+│  │   ├─ extract/route.ts
+│  │   └─ simplify/route.ts
+│  └─ globals.css
+│
+├─ components/
+│  ├─ layout/
+│  │   ├─ Navbar.tsx
+│  │   └─ Footer.tsx
+│  ├─ common/
+│  │   ├─ Button.tsx
+│  │   ├─ Loader.tsx
+│  │   ├─ FileInput.tsx
+│  │   └─ Alert.tsx
+│  ├─ upload/
+│  │   ├─ FileUploader.tsx
+│  │   └─ UploadPreview.tsx
+│  ├─ extract/
+│  │   ├─ ExtractArea.tsx
+│  │   └─ TextDisplay.tsx
+│  └─ simplify/
+│      └─ SimplifyPanel.tsx
+│
+├─ hooks/
+│  ├─ useFileUpload.ts           # Handles file input logic
+│  ├─ useTextExtract.ts          # Handles text extraction call
+│  ├─ useSimplify.ts             # Handles simplification call
+│  └─ useToast.ts                # Notifications
+│
+├─ services/                     # API logic layer
+│  ├─ apiClient.ts               # Axios / fetch wrapper
+│  ├─ extractService.ts          # Handles /api/extract
+│  └─ simplifyService.ts         # Handles /api/simplify
+│
+├─ lib/
+│  ├─ helpers.ts                 # Utilities (clean text, format, etc.)
+│  ├─ constants.ts               # Global constants
+│  └─ types.ts                   # TS interfaces (TextData, FileInfo, etc.)
+│
+├─ store/                        # Global state (optional - Zustand)
+│  └─ useAppStore.ts
+│
+├─ public/
+│   └─ logo.png
+│
+├─ styles/
+│   └─ globals.css
+│
+├─ .env.local                    # Env vars (e.g., OPENAI_API_KEY)
+├─ package.json
+├─ tsconfig.json
+└─ tailwind.config.js
+````
