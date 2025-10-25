@@ -6,7 +6,20 @@ import localFont from 'next/font/local';
 
 
 const waldba = localFont({
-    src: './fonts/RaeyType/WaldbaYigezuBisratGothic-Regular.ttf',
+    src: [
+        {path: './fonts/RaeyType/Brana-Regular.ttf', weight: '400', style: 'normal'},
+        {path: './fonts/RaeyType/Geez-Manuscript-Zemen-COLR.ttf', weight: '400', style: 'normal'},
+        {path: './fonts/RaeyType/gfzemenu.ttf', weight: '400', style: 'normal'},
+        {path: './fonts/RaeyType/WaldbaFantuwua-Regular.ttf', weight: '400', style: 'normal'},
+        {path: './fonts/RaeyType/WaldbaHiwua-Regular.ttf', weight: '400', style: 'normal'},
+        {path: './fonts/RaeyType/WaldbaJiret-Regular.ttf', weight: '400', style: 'normal'},
+        {path: './fonts/RaeyType/WaldbaTint-Regular.ttf', weight: '400', style: 'normal'},
+        {path: './fonts/RaeyType/WaldbaWookianos-Regular.ttf', weight: '400', style: 'normal'},
+        {path: './fonts/RaeyType/WaldbaYebse-Regular.ttf', weight: '400', style: 'normal'},
+        {path: './fonts/RaeyType/WaldbaYigezuBisratGoffer-Regular.ttf', weight: '400', style: 'normal'},
+        {path: './fonts/RaeyType/WaldbaYigezuBisratGothic-Regular.ttf', weight: '400', style: 'normal'},
+        {path: './fonts/RaeyType/WaldbaZelan-Regular.ttf', weight: '400', style: 'normal'},
+    ],
     display: 'swap',
 });
 
