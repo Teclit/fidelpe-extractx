@@ -220,3 +220,18 @@ body {
 
 /* Footer */
 .app-footer { text-align: center; color: var(--color-text-muted); font-size: 0.95rem; margin-top: 1rem; }
+
+/* Font utility classes - toutes les polices RaeyType disponibles */
+.font-brana { font-family: var(--font-brana); }
+.font-geez-manuscript { font-family: var(--font-geez-manuscript); }
+.font-gfzemenu { font-family: var(--font-gfzemenu); }
+.font-waldba-fantuwua { font-family: var(--font-waldba-fantuwua); }
+.font-waldba-hiwua { font-family: var(--font-waldba-hiwua); }
+.font-waldba-jiret { font-family: var(--font-waldba-jiret); }
+.font-waldba-tint { font-family: var(--font-waldba-tint); }
+.font-waldba-wookianos { font-family: var(--font-waldba-wookianos); }
+.font-waldba-yebse { font-family: var(--font-waldba-yebse); }
+.font-waldba-goffer { font-family: var(--font-waldba-goffer); }
+.font-waldba-gothic { font-family: var(--font-waldba-gothic); }
+.font-waldba-zelan { font-family: var(--font-waldba-zelan); }
+
