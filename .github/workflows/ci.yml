@@ -100,7 +100,7 @@ jobs:
         run: yarn build
 
       - name: Upload build artifact (.next)
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: next-build
           path: |
