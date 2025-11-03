@@ -171,6 +171,7 @@ jobs:
         run: corepack enable
 
       - name: Write Vercel project settings
+        shell: bash
         run: |
           mkdir -p .vercel
           cat > .vercel/project.json << EOF
@@ -178,6 +179,7 @@ jobs:
           EOF
 
       - name: Pull Vercel environment (preview/production)
+        shell: bash
         run: |
           ENV="preview"
           if [[ "$GITHUB_REF" == "refs/heads/main" || "$GITHUB_REF" == "refs/heads/master" || "$GITHUB_REF" == refs/tags/* ]]; then
@@ -189,7 +191,15 @@ jobs:
         run: yarn install --immutable
 
       - name: Create prebuilt output locally (vercel build)
-        run: npx vercel@latest build --token=${{ env.VERCEL_TOKEN }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          BUILD_FLAG=""
+          if [[ "$GITHUB_REF" == "refs/heads/main" || "$GITHUB_REF" == "refs/heads/master" || "$GITHUB_REF" == refs/tags/* ]]; then
+            BUILD_FLAG="--prod"
+          fi
+          echo "Running vercel build with flag: '$BUILD_FLAG'"
+          npx vercel@latest build $BUILD_FLAG --token="$VERCEL_TOKEN"
 
       - name: Deploy to Vercel (CLI)
         id: deploy
