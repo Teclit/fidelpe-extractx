@@ -2,6 +2,7 @@ name: CI
 
 on:
   push:
+<<<<<<< HEAD
     branches:
       - "**"
     tags:
@@ -10,6 +11,11 @@ on:
     branches:
       - "**"
   workflow_dispatch:
+=======
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+>>>>>>> 10bf034b327af1f96478a14731a3ba45ce5e3473
 
 concurrency:
   group: ci-${{ github.ref }}
