@@ -53,7 +53,7 @@ export default function Home(): React.ReactElement {
                 <h1 className="font-geez-gothic font-bold text-lg">ፊደልፐ ምስ ጽሑፋት</h1>
                 <h1>FidelpeExtractX — Rendre les textes faciles</h1>
                 <p className="lead">
-                    Cet outil est pour les personnes qui n'utilisent pas souvent les outils numériques.
+                    Cet outil est pour les personnes qui n&rsquo;utilisent pas souvent les outils numériques.
                     Copiez un texte ou importez une photo (facture, lettre, note). Nous extrayons
                     et simplifions les phrases pour que ce soit plus clair.
                 </p>
@@ -104,7 +104,7 @@ export default function Home(): React.ReactElement {
                 </section>
             )}
 
-            <footer className="app-footer">© {new Date().getFullYear()} FidelpeExtractX — Pour les personnes peu à l'aise avec le numérique.</footer>
+            <footer className="app-footer">© {new Date().getFullYear()} FidelpeExtractX — Pour les personnes peu à l&rsquo;aise avec le numérique.</footer>
         </main>
     );
 }
