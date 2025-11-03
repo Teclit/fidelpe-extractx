@@ -2,7 +2,7 @@
 
 Créer une application web ou un module qui permet à l’utilisateur de téléverser un fichier (image, PDF, document, etc.), puis d’extraire automatiquement le texte qu’il contient, de le simplifier linguistiquement (résumé, reformulation, ou traduction claire), et enfin de copier facilement le texte obtenu.
 
-````
+```
 fidelpe-extractx/
 │
 ├─ app/                          # Next.js App Router (frontend only)
@@ -67,4 +67,33 @@ fidelpe-extractx/
 ├─ package.json
 ├─ tsconfig.json
 └─ tailwind.config.js
-````
+```
+
+## 🚦 CI/CD
+
+This repo ships with a GitHub Actions CI workflow and an optional deploy workflow:
+
+- `.github/workflows/ci.yml` runs on pushes and PRs to `main` and `develop`:
+
+  - Installs dependencies with Yarn 4 (Corepack)
+  - Lints the codebase (ESLint)
+  - Type-checks (TypeScript, no emit)
+  - Builds the Next.js app and uploads the `.next` folder as an artifact
+
+- `.github/workflows/deploy-vercel.yml` provides a manual deploy via Vercel CLI. To use it:
+  1.  In GitHub repository settings, add secrets: `VERCEL_TOKEN`, `VERCEL_ORG_ID`, `VERCEL_PROJECT_ID`.
+  2.  Go to the Actions tab, run the "Deploy (Vercel)" workflow, choose `preview` or `production`.
+  3.  Optionally duplicate/adjust the workflow to auto-deploy on push to `main`.
+
+### Local checks
+
+Run the same checks locally before pushing:
+
+```powershell
+yarn install
+yarn lint
+yarn typecheck
+yarn build
+```
+
+Requirements: Node.js >= 20.10 with Corepack enabled (Yarn >= 4). The CI enforces these via `package.json` engines.
