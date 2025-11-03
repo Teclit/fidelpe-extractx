@@ -170,6 +170,21 @@ jobs:
       - name: Enable Corepack (Yarn)
         run: corepack enable
 
+      - name: Write Vercel project settings
+        run: |
+          mkdir -p .vercel
+          cat > .vercel/project.json << EOF
+          {"projectId":"${VERCEL_PROJECT_ID}","orgId":"${VERCEL_ORG_ID}"}
+          EOF
+
+      - name: Pull Vercel environment (preview/production)
+        run: |
+          ENV="preview"
+          if [[ "$GITHUB_REF" == "refs/heads/main" || "$GITHUB_REF" == "refs/heads/master" || "$GITHUB_REF" == refs/tags/* ]]; then
+            ENV="production"
+          fi
+          npx vercel@latest pull --yes --environment="$ENV" --token="${VERCEL_TOKEN}"
+
       - name: Install dependencies (Yarn 4)
         run: yarn install --immutable
 
