@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useMemo, useState } from 'react';
 
 /**
  * Composant de démonstration pour toutes les polices disponibles
@@ -9,7 +9,7 @@ import React from 'react';
 export default function FontsDemo() {
     const sampleText = "ፊደልፐ ምስ ጽሑፋት - Sample Text 123";
 
-    const groups: { group: string; fonts: { name: string; className: string }[] }[] = [
+    const groups: { group: string; fonts: { name: string; className: string }[] }[] = useMemo(() => [
         {
             group: 'RaeyType',
             fonts: [
@@ -206,97 +206,123 @@ export default function FontsDemo() {
                 { name: 'Ethiopic Sadiss', className: 'font-ethiopic-sadiss' },
             ],
         },
-    ];
+    ], []);
+
+    // Accordion state: collapsed by default for compact view
+    const initialOpen = useMemo(() => Object.fromEntries(groups.map(g => [g.group, false])), [groups]);
+    const [open, setOpen] = useState<Record<string, boolean>>(initialOpen);
+
+    const toggle = (key: string) => setOpen(prev => ({ ...prev, [key]: !prev[key] }));
 
     return (
-        <div style={{ padding: '2rem', maxWidth: '800px', margin: '0 auto' }}>
-            <h1 style={{ marginBottom: '2rem', textAlign: 'center' }}>
+        <div style={{ padding: '2rem', maxWidth: '1100px', margin: '0 auto' }}>
+            <h1 style={{ marginBottom: '1.25rem', textAlign: 'center', fontFamily: 'system-ui' }}>
                 Démonstration de toutes les polices
             </h1>
 
-            {groups.map(({ group, fonts }) => (
-                <div key={group} style={{ marginBottom: '2rem' }}>
-                    <h2 style={{
-                        margin: '0 0 0.75rem 0',
-                        fontSize: '1.125rem',
-                        color: '#333',
-                        fontFamily: 'system-ui'
-                    }}>
-                        {group}
-                    </h2>
-                    <div style={{ display: 'grid', gap: '1rem' }}>
-                        {fonts.map((font) => (
-                            <div
-                                key={font.className}
-                                style={{
-                                    padding: '0.75rem',
-                                    border: '1px solid #e5e7eb',
-                                    borderRadius: '8px',
-                                    background: '#fff'
-                                }}
-                            >
-                                <div style={{
-                                    fontSize: '0.8125rem',
-                                    color: '#666',
-                                    marginBottom: '0.25rem',
-                                    fontFamily: 'system-ui',
-                                    display: 'flex',
-                                    justifyContent: 'space-between',
-                                    gap: '0.5rem'
-                                }}>
-                                    <span>{font.name}</span>
-                                    <code style={{
-                                        background: '#f5f5f5',
-                                        padding: '0.125rem 0.375rem',
-                                        borderRadius: '3px',
-                                        fontSize: '0.75rem'
-                                    }}>
-                                        .{font.className}
-                                    </code>
-                                </div>
-                                <div
-                                    className={font.className}
+            {groups.map(({ group, fonts }) => {
+                const isOpen = open[group];
+                const count = fonts.length;
+                return (
+                    <div key={group} style={{ marginBottom: '1rem', border: '1px solid #e5e7eb', borderRadius: 10, background: '#fff' }}>
+                        <button
+                            onClick={() => toggle(group)}
+                            aria-expanded={isOpen}
+                            style={{
+                                width: '100%',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'space-between',
+                                gap: '0.75rem',
+                                padding: '0.75rem 1rem',
+                                background: 'transparent',
+                                border: 'none',
+                                cursor: 'pointer'
+                            }}
+                        >
+                            <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                                <span
+                                    aria-hidden
                                     style={{
-                                        fontSize: '1.375rem',
-                                        lineHeight: '1.5'
+                                        display: 'inline-block',
+                                        transform: `rotate(${isOpen ? 90 : 0}deg)`,
+                                        transition: 'transform 150ms ease'
                                     }}
                                 >
-                                    {sampleText}
+                                    ▸
+                                </span>
+                                <span style={{ fontFamily: 'system-ui', fontSize: '1rem', color: '#111827' }}>{group}</span>
+                            </div>
+                            <span style={{
+                                fontFamily: 'system-ui',
+                                fontSize: '0.875rem',
+                                color: '#6b7280',
+                                background: '#f3f4f6',
+                                border: '1px solid #e5e7eb',
+                                padding: '0.125rem 0.5rem',
+                                borderRadius: 999
+                            }}>
+                                {count}
+                            </span>
+                        </button>
+
+                        {isOpen && (
+                            <div style={{
+                                padding: '0.75rem 1rem 1rem',
+                                borderTop: '1px solid #f3f4f6'
+                            }}>
+                                <div style={{
+                                    display: 'grid',
+                                    gap: '0.75rem',
+                                    gridTemplateColumns: 'repeat(2, minmax(0, 1fr))'
+                                }}>
+                                    {fonts.map((font) => (
+                                        <div
+                                            key={font.className}
+                                            style={{
+                                                padding: '0.75rem',
+                                                border: '1px solid #e5e7eb',
+                                                borderRadius: '8px',
+                                                background: '#fff'
+                                            }}
+                                        >
+                                            <div style={{
+                                                fontSize: '0.8125rem',
+                                                color: '#666',
+                                                marginBottom: '0.25rem',
+                                                fontFamily: 'system-ui',
+                                                display: 'flex',
+                                                justifyContent: 'space-between',
+                                                gap: '0.5rem'
+                                            }}>
+                                                <span>{font.name}</span>
+                                                <code style={{
+                                                    background: '#f5f5f5',
+                                                    padding: '0.125rem 0.375rem',
+                                                    borderRadius: '3px',
+                                                    fontSize: '0.75rem'
+                                                }}>
+                                                    .{font.className}
+                                                </code>
+                                            </div>
+                                            <div
+                                                className={font.className}
+                                                style={{
+                                                    fontSize: '1.25rem',
+                                                    lineHeight: '1.5'
+                                                }}
+                                            >
+                                                {sampleText}
+                                            </div>
+                                        </div>
+                                    ))}
                                 </div>
                             </div>
-                        ))}
+                        )}
                     </div>
-                </div>
-            ))}
-
-            <div style={{
-                marginTop: '2rem',
-                padding: '1rem',
-                background: '#f9f9f9',
-                borderRadius: '8px'
-            }}>
-                <h3 style={{ marginTop: 0 }}>Comment utiliser :</h3>
-                <pre style={{
-                    background: '#fff',
-                    padding: '1rem',
-                    borderRadius: '4px',
-                    overflow: 'auto',
-                    fontSize: '0.875rem'
-                }}>
-{`// Méthode 1 : Avec className
-<h1 className="font-brana">Votre texte</h1>
-
-// Méthode 2 : Avec style inline
-<h1 style={{ fontFamily: 'var(--font-brana)' }}>
-  Votre texte
-</h1>
-
-// Méthode 3 : Import direct
-import { brana } from './layout';
-<h1 className={brana.className}>Votre texte</h1>`}
-                </pre>
-            </div>
-        </div>
+                );
+            })}
+    </div>
     );
 }
 
