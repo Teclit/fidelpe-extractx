@@ -215,102 +215,51 @@ export default function FontsDemo() {
     const toggle = (key: string) => setOpen(prev => ({ ...prev, [key]: !prev[key] }));
 
     return (
-        <div style={{ padding: '2rem', maxWidth: '1100px', margin: '0 auto' }}>
-            <h1 style={{ marginBottom: '1.25rem', textAlign: 'center', fontFamily: 'system-ui' }}>
-                Démonstration de toutes les polices
+        <div className="p-8 max-w-5xl mx-auto">
+            <h1 className="mb-5 text-center font-sans">
+            Démonstration de toutes les polices
             </h1>
 
             {groups.map(({ group, fonts }) => {
                 const isOpen = open[group];
                 const count = fonts.length;
                 return (
-                    <div key={group} style={{ marginBottom: '1rem', border: '1px solid #e5e7eb', borderRadius: 10, background: '#fff' }}>
+                    <div key={group} className="mb-4 border border-gray-200 bg-white rounded-lg shadow-sm">
                         <button
                             onClick={() => toggle(group)}
                             aria-expanded={isOpen}
-                            style={{
-                                width: '100%',
-                                display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: 'space-between',
-                                gap: '0.75rem',
-                                padding: '0.75rem 1rem',
-                                background: 'transparent',
-                                border: 'none',
-                                cursor: 'pointer'
-                            }}
+                            className="w-full flex items-center justify-between gap-3 p-3 bg-transparent border-none cursor-pointer"
                         >
-                            <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                            <div className="flex items-center gap-2.5 px-2 py-1 rounded">
                                 <span
                                     aria-hidden
-                                    style={{
-                                        display: 'inline-block',
-                                        transform: `rotate(${isOpen ? 90 : 0}deg)`,
-                                        transition: 'transform 150ms ease'
-                                    }}
+                                    className={`inline-block transition-transform duration-150 ease-in-out ${isOpen ? 'rotate-90' : 'rotate-0'}`}
                                 >
                                     ▸
                                 </span>
-                                <span style={{ fontFamily: 'system-ui', fontSize: '1rem', color: '#111827' }}>{group}</span>
+                                <span className="font-sans text-base text-gray-900">{group}</span>
                             </div>
-                            <span style={{
-                                fontFamily: 'system-ui',
-                                fontSize: '0.875rem',
-                                color: '#6b7280',
-                                background: '#f3f4f6',
-                                border: '1px solid #e5e7eb',
-                                padding: '0.125rem 0.5rem',
-                                borderRadius: 999
-                            }}>
+                            <span className="font-sans text-sm text-gray-500 bg-gray-100 border border-gray-200 px-2 py-0.5 rounded-full">
                                 {count}
                             </span>
                         </button>
 
                         {isOpen && (
-                            <div style={{
-                                padding: '0.75rem 1rem 1rem',
-                                borderTop: '1px solid #f3f4f6'
-                            }}>
-                                <div style={{
-                                    display: 'grid',
-                                    gap: '0.75rem',
-                                    gridTemplateColumns: 'repeat(2, minmax(0, 1fr))'
-                                }}>
+                            <div className="p-3 pt-0 border-t border-gray-100">
+                                <div className="grid grid-cols-2 gap-3">
                                     {fonts.map((font) => (
                                         <div
                                             key={font.className}
-                                            style={{
-                                                padding: '0.75rem',
-                                                border: '1px solid #e5e7eb',
-                                                borderRadius: '8px',
-                                                background: '#fff'
-                                            }}
+                                            className="p-3 border border-gray-200 rounded-lg bg-white  shadow-sm"
                                         >
-                                            <div style={{
-                                                fontSize: '0.8125rem',
-                                                color: '#666',
-                                                marginBottom: '0.25rem',
-                                                fontFamily: 'system-ui',
-                                                display: 'flex',
-                                                justifyContent: 'space-between',
-                                                gap: '0.5rem'
-                                            }}>
+                                            <div className="text-xs text-gray-600 mb-1 font-sans flex justify-between gap-2">
                                                 <span>{font.name}</span>
-                                                <code style={{
-                                                    background: '#f5f5f5',
-                                                    padding: '0.125rem 0.375rem',
-                                                    borderRadius: '3px',
-                                                    fontSize: '0.75rem'
-                                                }}>
+                                                <code className="bg-gray-100 px-1.5 py-0.5 rounded text-xs">
                                                     .{font.className}
                                                 </code>
                                             </div>
                                             <div
-                                                className={font.className}
-                                                style={{
-                                                    fontSize: '1.25rem',
-                                                    lineHeight: '1.5'
-                                                }}
+                                                className={`${font.className} text-xl leading-6`}
                                             >
                                                 {sampleText}
                                             </div>
@@ -322,7 +271,7 @@ export default function FontsDemo() {
                     </div>
                 );
             })}
-    </div>
+        </div>
     );
 }
 
