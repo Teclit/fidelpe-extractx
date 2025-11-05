@@ -2578,6 +2578,7 @@ __metadata:
     autoprefixer: "npm:^10.4.21"
     eslint: "npm:^9"
     eslint-config-next: "npm:15.5.5"
+    html-to-image: "npm:^1.11.13"
     next: "npm:^15.5.5"
     postcss: "npm:^8.5.6"
     react: "npm:^19.2.0"
@@ -2845,6 +2846,13 @@ __metadata:
   dependencies:
     function-bind: "npm:^1.1.2"
   checksum: 10c0/3769d434703b8ac66b209a4cca0737519925bbdb61dd887f93a16372b14694c63ff4e797686d87c90f08168e81082248b9b028bad60d4da9e0d1148766f56eb9
+  languageName: node
+  linkType: hard
+
+"html-to-image@npm:^1.11.13":
+  version: 1.11.13
+  resolution: "html-to-image@npm:1.11.13"
+  checksum: 10c0/03bd7192d87b99499e37ff12a8e2b41ddce4cf8e33a93dfadff18df0f213434c7f1ba8328db2158f4805da07b7aec3c90aec3152908281153217e86784218b10
   languageName: node
   linkType: hard
 

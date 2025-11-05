@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { EditorContent, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Underline from "@tiptap/extension-underline";
@@ -11,6 +11,7 @@ import Link from "@tiptap/extension-link";
 import Highlight from "@tiptap/extension-highlight";
 import Placeholder from "@tiptap/extension-placeholder";
 import FontFamily from "@tiptap/extension-font-family";
+import * as htmlToImage from "html-to-image";
 
 type Personalization = {
   theme: "light" | "dark";
@@ -70,6 +71,7 @@ function ToolbarButton({
 }
 
 export default function RichTextEditor(): React.ReactElement {
+  const captureRef = useRef<HTMLDivElement | null>(null);
   const [perso, setPerso] = useState<Personalization>(() => {
     try {
       const raw = localStorage.getItem(STORAGE_KEY_PERSO);
@@ -152,6 +154,74 @@ export default function RichTextEditor(): React.ReactElement {
     a.download = "document.txt";
     a.click();
     URL.revokeObjectURL(a.href);
+  };
+
+  const exportPng = async () => {
+    const node = captureRef.current;
+    if (!node) return;
+    const bg = perso.theme === "dark" ? "#111827" : "#ffffff";
+    // Resolve CSS variable to an actual font-family stack string for capture
+    const root = document.documentElement;
+    const varValue = getComputedStyle(root).getPropertyValue(perso.fontVar)?.trim();
+    const resolvedFont = varValue || (node ? getComputedStyle(node).fontFamily : "serif");
+    try {
+      // Ensure fonts are loaded; skipFonts avoids problematic font parsing/embedding
+      type FontFaceSetLike = { ready?: Promise<void> };
+      const fonts = (document as Document & { fonts?: FontFaceSetLike }).fonts;
+      await fonts?.ready;
+      const dataUrl = await htmlToImage.toPng(node, {
+        backgroundColor: bg,
+        cacheBust: true,
+        pixelRatio: 2,
+        skipFonts: true,
+        style: {
+          fontFamily: resolvedFont,
+          // Ensure consistent DPI sizing
+          transform: "scale(1)",
+          transformOrigin: "top left",
+        },
+      });
+      const a = document.createElement("a");
+      a.href = dataUrl;
+      a.download = "document.png";
+      a.click();
+    } catch (err) {
+      console.error("Export PNG failed", err);
+      alert("Export PNG failed. Try changing font or theme, then retry.");
+    }
+  };
+
+  const exportJpeg = async () => {
+    const node = captureRef.current;
+    if (!node) return;
+    const bg = perso.theme === "dark" ? "#111827" : "#ffffff";
+    const root = document.documentElement;
+    const varValue = getComputedStyle(root).getPropertyValue(perso.fontVar)?.trim();
+    const resolvedFont = varValue || (node ? getComputedStyle(node).fontFamily : "serif");
+    try {
+      type FontFaceSetLike = { ready?: Promise<void> };
+      const fonts = (document as Document & { fonts?: FontFaceSetLike }).fonts;
+      await fonts?.ready;
+      const dataUrl = await htmlToImage.toJpeg(node, {
+        backgroundColor: bg,
+        cacheBust: true,
+        quality: 0.95,
+        pixelRatio: 2,
+        skipFonts: true,
+        style: {
+          fontFamily: resolvedFont,
+          transform: "scale(1)",
+          transformOrigin: "top left",
+        },
+      });
+      const a = document.createElement("a");
+      a.href = dataUrl;
+      a.download = "document.jpg";
+      a.click();
+    } catch (err) {
+      console.error("Export JPG failed", err);
+      alert("Export JPG failed. Try changing font or theme, then retry.");
+    }
   };
 
   return (
@@ -241,6 +311,16 @@ export default function RichTextEditor(): React.ReactElement {
             >Export TXT</button>
             <button
               type="button"
+              className="px-3 py-1 mr-2 rounded-md border border-gray-300 bg-white text-sm"
+              onClick={exportPng}
+            >Export PNG</button>
+            <button
+              type="button"
+              className="px-3 py-1 mr-2 rounded-md border border-gray-300 bg-white text-sm"
+              onClick={exportJpeg}
+            >Export JPG</button>
+            <button
+              type="button"
               className="px-3 py-1 rounded-md border border-gray-300 bg-white text-sm"
               onClick={() => window.print()}
             >Print</button>
@@ -259,6 +339,7 @@ export default function RichTextEditor(): React.ReactElement {
       {/* Editor Area */}
       <div className={`mx-auto ${wrapperMaxW} shadow-sm rounded-xl border border-[var(--card-border)] overflow-hidden`}> 
         <div
+          ref={captureRef}
           className={`${themeClasses} p-4 sm:p-6`}
           style={{
             fontFamily: `var(${perso.fontVar})`,
